@@ -3,5 +3,6 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   title: DS.attr('string'),
   url: DS.attr('string'),
-  rank: DS.attr('number')
+  rank: DS.attr('number'),
+  hackerNewsId: DS.attr('number')
 });
