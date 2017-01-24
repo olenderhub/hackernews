@@ -10,7 +10,8 @@ export default Ember.Route.extend({
     fetchAllNews(callback) {
       const url = config.apiURL + '/api/fetch-news';
       return Ember.$.ajax({
-		url: url
+		url: url,
+        data: { target: 'ycombinator' }
       }).done((allNews) => {
 		this.store.pushPayload('news', allNews);
         callback();

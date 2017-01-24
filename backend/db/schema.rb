@@ -10,6 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170124215647) do
+
+  create_table "news", force: :cascade do |t|
+    t.string  "title",   null: false
+    t.string  "url",     null: false
+    t.integer "rank",    null: false
+    t.integer "news_id", null: false
+  end
 
 end

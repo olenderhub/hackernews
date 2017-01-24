@@ -1,35 +1,42 @@
 class FetchNews
   include Interactor
+  delegate :target, to: :context
 
   def call
-    page = 1
-    loop do
-      doc = Nokogiri::HTML(open("https://news.ycombinator.com/news?p=" + page.to_s))
-      break if doc.css('.athing').blank?
-      doc.css('.athing').each do |news|
-        create_or_update(news)
-      end
-      page += 1
-    end
+    set_initial_page
+    fetch_news
     context.news = News.all
   end
 
   private
 
-  def hash_from_news(news)
-    {
-      hacker_news_id: news.attributes['id'].value.to_i,
-      rank: news.css('td')[0].text.chop!.to_i,
-      title: news.css('td:nth-of-type(3) a').first.text,
-      url: news.css('td:nth-of-type(3) a').first.attr('href')
-    }
+  def set_initial_page
+    @page = 1
+  end
+
+  def fetch_news
+    loop do
+      doc = selected_pattern.html_doc(@page)
+      news_from_doc = selected_pattern.news_from_doc(doc)
+      break if news_from_doc.blank?
+      news_from_doc.each { |news| create_or_update(news) }
+      @page += 1
+    end
+  end
+
+  def selected_pattern
+    case target
+    when 'ycombinator'
+      @selected_pattern ||= FetchingPatterns::Ycombinator.new
+    end
   end
 
   def create_or_update(news)
-    if record = News.find_by(hacker_news_id: news.attributes['id'].value.to_i)
-      record.update!(hash_from_news(news))
+    hash_from_news = @selected_pattern.hash_from_news(news)
+    if record = News.find_by(news_id: hash_from_news[:news_id])
+      record.update!(hash_from_news)
     else
-      News.create!(hash_from_news(news))
+      News.create!(hash_from_news)
     end
   end
 end

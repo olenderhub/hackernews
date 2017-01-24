@@ -1,3 +1,3 @@
 class News < ApplicationRecord
-  validates :url, :title, :rank, :hacker_news_id, presence: true
+  validates :url, :title, :rank, :news_id, presence: true
 end
