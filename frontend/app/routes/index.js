@@ -7,12 +7,13 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    fetchAllNews() {
+    fetchAllNews(callback) {
       const url = config.apiURL + '/api/fetch-news';
       return Ember.$.ajax({
 		url: url
       }).done((allNews) => {
 		this.store.pushPayload('news', allNews);
+        callback();
 	  });
     }
   }
