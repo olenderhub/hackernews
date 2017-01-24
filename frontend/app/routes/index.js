@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from '../config/environment';
 
 export default Ember.Route.extend({
   model() {
@@ -7,19 +8,12 @@ export default Ember.Route.extend({
 
   actions: {
     fetchAllNews() {
-      const _this = this;
+      const url = config.apiURL + '/api/fetch-news';
       return Ember.$.ajax({
-        url: 'https://hacker-news.firebaseio.com/v0/topstories.json'
-      }).done((top500storiesIDs) => {
-        top500storiesIDs.forEach((storyID, index) => {
-          Ember.$.ajax({
-            url: `https://hacker-news.firebaseio.com/v0/item/${storyID}.json?print=pretty`
-          }).done((story) => {
-            const rank = index + 1;
-            _this.store.createRecord('news', { title: story.title, url: story.url, rank: rank });
-          });
-        });
-      });
+		url: url
+      }).done((allNews) => {
+		this.store.pushPayload('news', allNews);
+	  });
     }
   }
 });
