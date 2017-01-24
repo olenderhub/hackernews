@@ -6,20 +6,7 @@ moduleForComponent('news-from-hackernews', 'Integration | Component | news from 
 });
 
 test('it renders', function(assert) {
-
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
   this.render(hbs`{{news-from-hackernews}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#news-from-hackernews}}
-      template block text
-    {{/news-from-hackernews}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim(), 'Click and fetch all news!');
 });

@@ -4,9 +4,9 @@ import { module, test } from 'qunit';
 
 module('Unit | Helper | show domain name');
 
-// Replace this with your real tests.
 test('it works', function(assert) {
-  let result = showDomainName([42]);
-  assert.ok(result);
+  let result = showDomainName(['http://mydomain.com/path']);
+
+  assert.equal(result, 'http://mydomain.com');
 });
 
