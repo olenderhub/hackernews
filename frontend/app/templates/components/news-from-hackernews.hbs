@@ -1,0 +1,11 @@
+<h3><button {{action "fetchAllNews"}}>fetchAllNews</button></h3>
+<table>
+  <tbody>
+    {{#each allNews as |news index|}}
+      <tr>
+        <td>{{news.rank}}</td>
+        <td><a href=news.url>{{news.title}}({{show-domain-name news.url}})</a></td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
